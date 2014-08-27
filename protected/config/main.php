@@ -55,8 +55,8 @@ return array(
 		'db'=>array(
 			'connectionString' => 'mysql:host=localhost;dbname=stagingp_fakefriendfinder',
 			'emulatePrepare' => true,
-			'username' => 'stagingp_fake',
-			'password' => 'fake@123',
+			'username' => 'root',
+			'password' => 'admin',
 			'charset' => 'utf8',
 		),
 		
