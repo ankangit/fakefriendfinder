@@ -180,10 +180,10 @@ class UsersController extends Controller
         
         if(isset($_POST['PasswordReset']))
 		{
-			$email=$_POST['PasswordReset']['email'];
+			echo $email=$_POST['PasswordReset']['email'];
 			//$username=$_POST['PasswordReset']['username'];
 			$aid=self::activationKeyGenerate();
-                        $pass=self::passwordGenerate();
+                        echo $pass=self::passwordGenerate();
 			$emailTemplate=EmailTemplate::model()->findByAttributes(array('email_template_key' => EmailTemplate::PASSWORD_RECOVERY,));
 			$user_model=Users::model()->findByAttributes(array('email'=>$email));
                         if($user_model==null)
@@ -201,8 +201,8 @@ class UsersController extends Controller
 						$aid.='C';
 						 $mail->Subject = $emailTemplate->email_template_subject;
 						 //$user_model->activation_key=$aid;
-                                                 $user_model->password=md5($pass);
-						$user_model->update();
+                                                 $user_model->password=$pass;
+						 $user_model->save();
 						 //$link = $this->createAbsoluteUrl('/users/resetpassword', array('acode' => $aid ,'user' => $username ));
                                                  $link = $this->createAbsoluteUrl('/site/login', array('acode' => $aid ,'user' => $user_model->username ));
 						  //-----------
@@ -227,7 +227,7 @@ class UsersController extends Controller
 						  //$mail->AddAddress($email, $user_model->username);
 						   $mail->SetFrom('contact@fakefreindfinder.com', 'GMail');
 						 $mail->MsgHTML($ls_emailBody);
-						
+						print_r($ls_emailBody);
 						$mail->Send();
 											
 						//Yii::app()->user->setFlash('forgot_pass_success','Please check your mail for the reset password link.');
