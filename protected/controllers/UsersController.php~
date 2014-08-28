@@ -28,7 +28,7 @@ class UsersController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('view','create','forgotPassword','resetpassword','fblogin'),
+				'actions'=>array('view','create','forgotPassword','resetpassword'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -78,38 +78,6 @@ class UsersController extends Controller
 			'model'=>$model,
 		));
 	}
-        
-        
-        public function actionFblogin(){
-            
-            require_once(Yii::app()->basePath . '/extensions/fbconnect/base_facebook.php');
-            require_once(Yii::app()->basePath . '/extensions/fbconnect/facebook.php');
-            
-            $appid= "169599634635";
-            $appsecret= "702a2468f79452dbf13dac2eb56c6214";
-            $facebook   = new Facebook(array(
-                                                'appId' => $appid,
-                                                'secret' => $appsecret,
-                                                'cookie' => TRUE,
-                                            ));
-            $fbuser = $facebook->getUser();
-            if ($fbuser) {
-                        try {
-                            $user_profile = $facebook->api('/me');
-                            }
-            catch (Exception $e) {
-                    echo $e->getMessage();
-                    exit();
-            }
-            $user_fbid	= $fbuser;
-            $user_email = $user_profile["email"];
-            $user_fnmae = $user_profile["first_name"];
-            $user_image = "https://graph.facebook.com/".$user_fbid."/picture?type=large";
-              
-             var_dump($user_profile);
-            
-            }
-       }
 
 	/**
 	 * Updates a particular model.

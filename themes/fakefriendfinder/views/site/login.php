@@ -8,7 +8,32 @@ $this->breadcrumbs=array(
 	'Login',
 );
 ?>
+<script type="text/javascript">
+window.fbAsyncInit = function() {
+	FB.init({
+	appId      : '169599634635', // replace your app id here
+	channelUrl : 'http://stagingpc.com/fakefriendfinder', 
+	status     : true, 
+	cookie     : true, 
+	xfbml      : true  
+	});
+};
+(function(d){
+	var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+	if (d.getElementById(id)) {return;}
+	js = d.createElement('script'); js.id = id; js.async = true;
+	js.src = "//connect.facebook.net/en_US/all.js";
+	ref.parentNode.insertBefore(js, ref);
+}(document));
 
+function FBLogin(){
+	FB.login(function(response){
+		if(response.authResponse){
+			window.location.href = "<?php echo Yii::app()->request->baseUrl?>index.php/users/fblogin";
+		}
+	}, {scope: 'email,user_likes'});
+}
+</script>
 <h1>Login</h1>
 
 <p>Please fill out the following form with your login credentials:</p>
@@ -42,14 +67,16 @@ $this->breadcrumbs=array(
 		<?php echo $form->label($model,'rememberMe'); ?>
 		<?php echo $form->error($model,'rememberMe'); ?>
 	</div>
-
+        <div class="login_btn_section">
 	<div class="row buttons">
 		<?php echo CHtml::submitButton('Login'); ?>
 	</div>
+            <div class="login_with_fb" ><img src="<?php echo Yii::app()->request->baseUrl?>/themes/fakefriendfinder/img/facebook-connect.png" onclick="FBLogin();"></div>    
+        </div>
      
      <p>&nbsp;</p>
     <p style="text-align:left;">
-        <?php echo "Do you forget your password.please ". CHtml::link('click here' , array('users/forgotPassword') , array());?><br />
+        <?php echo  CHtml::link('Forgot your password?' , array('users/forgotPassword') , array());?><br />
      </p>
 <?php $this->endWidget(); ?>
 </div><!-- form -->
