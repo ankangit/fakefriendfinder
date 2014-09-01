@@ -775,6 +775,28 @@ body.adminmode {
 	color: #fff;
 }
 
+#nav ul.nav li ul
+{
+    display: none;
+}
+
+#nav ul.nav li:hover ul 
+{
+    display: block;
+    position: absolute;
+    background: #ff8c21;
+   
+}
+
+
+#nav ul.nav li:hover li
+{
+    float: none;
+    
+}
+
+
+
 /*
 .top-bar-section .has-dropdown > a:after {
     -moz-border-bottom-colors: none;

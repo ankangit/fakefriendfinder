@@ -23,16 +23,6 @@
 </head>
 
 <body>
-
-<div id="fb-root"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=329769627157474";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
-
 <!--[if lt IE 7]>
 	<p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
 <![endif]-->
@@ -100,16 +90,28 @@
 							<li><a href="#" target="_self">Login / Account</a></li>
 						</ul>
 						-->
-						<?php $this->widget('zii.widgets.CMenu',array(
+						<?php 
+                                                if(Yii::app()->user->name=="admin"){
+                                                $profile_sub_menu=array(
+                                                                         array('label'=>'Change Password', 'url'=>array('/users/changePassword', 'id'=>Yii::app()->user->getId()), 'visible'=>(!Yii::app()->user->isGuest)),
+                                                                        );
+                                                }else{
+                                                $profile_sub_menu=array(
+                                                                        array('label'=>'Update Profile', 'url'=>array('/users/update', 'id'=>Yii::app()->user->getId()), 'visible'=>(!Yii::app()->user->isGuest)),
+                                                                        array('label'=>'Change Password', 'url'=>array('/users/changePassword', 'id'=>Yii::app()->user->getId()), 'visible'=>(!Yii::app()->user->isGuest)),
+                                                                        );
+                                                }
+      
+                                                $this->widget('zii.widgets.CMenu',array(
 							'items'=>array(
 								array('label'=>'Home', 'url'=>array('/site/index')),
 								array('label'=>'About FFF', 'url'=>array('/site/page', 'view'=>'about')),
 								array('label'=>'Contact Us', 'url'=>array('/site/contact')),
                                                                  array('label'=>'Users List', 'url'=>array('/users/admin'), 'visible'=>(Yii::app()->user->name=="admin")),
-                                                                 array('label'=>'Profile', 'url'=>array('/users/view','id'=>Yii::app()->user->getId()), 'visible'=>(!Yii::app()->user->isGuest && Yii::app()->user->name!="admin")),
+                                                                 array('label'=>'Profile', 'url'=>array('/users/view','id'=>Yii::app()->user->getId()), 'visible'=>(!Yii::app()->user->isGuest),'items'=>$profile_sub_menu),
 								array('label'=>'Login', 'url'=>array('/site/login'), 'visible'=>Yii::app()->user->isGuest),
 								array('label'=>'Register', 'url'=>array('/users/create'), 'visible'=>Yii::app()->user->isGuest),
-								array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
+								array('label'=>'Logout', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
 							),
 							'htmlOptions' => array(
                     				'class'=>'nav left',

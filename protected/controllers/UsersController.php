@@ -103,11 +103,45 @@ class UsersController extends Controller
             }
             $user_fbid	= $fbuser;
             $user_email = $user_profile["email"];
-            $user_fnmae = $user_profile["first_name"];
+            $user_fname = $user_profile["first_name"];
             $user_image = "https://graph.facebook.com/".$user_fbid."/picture?type=large";
-              
-             var_dump($user_profile);
-            
+                          
+            $user_model=Users::model()->findByAttributes(array('username'=>$user_email));
+             if($user_model!=null)
+             {
+                
+                 $identity=new UserIdentity($user_model->username,$user_model->pass_salt);
+                 $identity->authenticate();
+                 Yii::app()->user->login($identity);
+                 
+                   $id=$user_model->id;
+                   Yii::app()->user->setState('username',$user_model->username);
+                    // $identity=new UserIdentity($model->username,$model->password);
+			//$identity->authenticate();
+                   
+                   $this->redirect(array('view','id'=>$user_model->id)); 
+                                
+             }
+             else
+             {
+                $model=new Users;
+             	$pass=self::passwordGenerate();
+                $model->email=$user_email;
+                $model->username=$user_email;
+                $model->name=$user_fname;
+                $model->password=$pass;
+                $model->pass_salt=$pass;
+                $model->active=1;
+                $model->insert();
+                
+                $identity=new UserIdentity($user_email,$pass);
+                $identity->authenticate();
+                
+                 Yii::app()->user->login($identity);      
+                 Yii::app()->user->setState('username',$model->username);
+                
+	        $this->redirect(array('view','id'=>$model->id));
+             }
             }
        }
 

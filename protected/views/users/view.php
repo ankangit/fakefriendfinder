@@ -16,20 +16,20 @@ $this->menu=array(
         array('label'=>'Change Password', 'url'=>array('changePassword', 'id'=>$model->id)),
 );
 ?>
-
-<h1>View Users #<?php echo $model->id; ?></h1>
+<?php //echo Yii::app()->user->name; ?>
+<h1>Profile Information</h1>
 
 <?php $this->widget('zii.widgets.CDetailView', array(
 	'data'=>$model,
 	'attributes'=>array(
-		'id',
+		//'id',
 		'name',
 		'dob',
 		'gender',
 		'email',
 		'address',
 		'phone',
-		'username',
+		//'username',
 		//'password',
 		//'active',
 	),
